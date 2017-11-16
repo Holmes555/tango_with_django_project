@@ -1,12 +1,11 @@
 import os
+os.environ.setdefault('DJANGO_SETTINGS_MODULE',
+                      'tango_with_django_project.settings')
+
 import django
+django.setup()
 
 from rango.models import Category, Page
-
-os.environ('DJANGO_SETTINGS_MODULE',
-           'tango_with_django_project.settings')
-
-django.setup()
 
 
 def populate():
@@ -48,7 +47,7 @@ def populate():
         for p in cat_data['pages']:
             add_page(c, p['title'], p['url'])
 
-    for c in Category.objects.all:
+    for c in Category.objects.all():
         for p in Page.objects.filter(category=c):
             print('{0} : {1}'.format(str(c), str(p)))
 
