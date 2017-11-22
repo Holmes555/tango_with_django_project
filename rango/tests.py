@@ -33,7 +33,7 @@ class IndexPageTests(TestCase):
 
     def test_index_has_title(self):
         # Check to make sure that the title tag has been used
-        # And that the template contains the HTML from Chapter 4 
+        # And that the template contains the HTML from Chapter 4
         response = self.client.get(reverse('index'))
         self.assertIn(b'<title>', response.content)
         self.assertIn(b'</title>', response.content)
@@ -54,7 +54,7 @@ class AboutPageTests(TestCase):
 
     def test_about_using_template(self):
         # Check the template used to render index page
-        # Exercise from Chapter 4 
+        # Exercise from Chapter 4
         response = self.client.get(reverse('about'))
 
         self.assertTemplateUsed(response, 'rango/about.html')
@@ -87,23 +87,23 @@ class ModelTests(TestCase):
 
     def test_python_cat_with_views(self):
         cat = self.get_category('Python')
-        self.assertEquals(cat.views, 128)
+        self.assertEqual(cat.views, 128)
 
     def test_python_cat_with_likes(self):
         cat = self.get_category('Python')
-        self.assertEquals(cat.likes, 64)
+        self.assertEqual(cat.likes, 64)
 
 
 class Chapter4ViewTests(TestCase):
     def test_index_contains_hello_message(self):
         # Check if there is the message 'hello world!'
         response = self.client.get(reverse('index'))
-        self.assertIn('Rango says', response.content)
+        self.assertIn(b'Rango says', response.content)
 
     def test_does_index_contain_img(self):
         # Check if the index page contains an img
         response = self.client.get(reverse('index'))
-        self.assertIn('img', response.content)
+        self.assertIn(b'img', response.content)
 
     def test_about_using_template(self):
         # Check the template used to render index page
@@ -115,12 +115,12 @@ class Chapter4ViewTests(TestCase):
     def test_does_about_contain_img(self):
         # Check if in the about page contains an image
         response = self.client.get(reverse('about'))
-        self.assertIn('img', response.content)
+        self.assertIn(b'img', response.content)
 
     def test_about_contains_create_message(self):
         # Check if in the about page contains the message from the exercise
         response = self.client.get(reverse('about'))
-        self.assertIn('This tutorial has been put together by', response.content)
+        self.assertIn(b'This tutorial has been put together by', response.content)
 
 
 class Chapter5ViewTests(TestCase):
@@ -136,7 +136,6 @@ class Chapter5ViewTests(TestCase):
             print('Something went wrong in the populate() function :-(')
 
     def get_category(self, name):
-
         from rango.models import Category
         try:
             cat = Category.objects.get(name=name)
@@ -151,24 +150,24 @@ class Chapter5ViewTests(TestCase):
     def test_python_cat_with_views(self):
         cat = self.get_category('Python')
 
-        self.assertEquals(cat.views, 128)
+        self.assertEqual(cat.views, 128)
 
     def test_python_cat_with_likes(self):
         cat = self.get_category('Python')
-        self.assertEquals(cat.likes, 64)
+        self.assertEqual(cat.likes, 64)
 
     def test_view_has_title(self):
         response = self.client.get(reverse('index'))
 
         # Check title used correctly
-        self.assertIn('<title>', response.content)
-        self.assertIn('</title>', response.content)
+        self.assertIn(b'<title>', response.content)
+        self.assertIn(b'</title>', response.content)
 
     # Need to add tests to:
     # check admin interface - is it configured and set up
 
     def test_admin_interface_page_view(self):
-        from rango.admin import PageAdmin
+        from .admin import PageAdmin
         self.assertIn('category', PageAdmin.list_display)
         self.assertIn('url', PageAdmin.list_display)
 
@@ -189,7 +188,6 @@ class Chapter6ViewTests(TestCase):
 
     # does the category model have a slug field?
 
-
     # test the slug field works..
     def test_does_slug_field_work(self):
         from rango.models import Category
@@ -199,9 +197,7 @@ class Chapter6ViewTests(TestCase):
 
         # test category view does the page exist?
 
-
         # test whether you can navigate from index to a category page
-
 
         # test does index page contain top five pages?
 
@@ -232,9 +228,7 @@ class Chapter7ViewTests(TestCase):
 
     # test is there an category page?
 
-
     # test if index contains link to add category page
     # <a href="/rango/add_category/">Add a New Category</a><br />
-
 
     # test if the add_page.html template exists.
