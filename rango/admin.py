@@ -13,7 +13,7 @@ class PageAdmin(admin.ModelAdmin):
         ('Info', {'fields': ['title', 'url']}),
         ('Popularity', {'fields': ['views']})
     ]
-    list_display = ['title', 'category', 'url']
+    list_display = ['title', 'category', 'url', 'views']
 
 
 admin.site.register(Category, CategoryAdmin)

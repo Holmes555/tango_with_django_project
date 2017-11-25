@@ -16,21 +16,37 @@
 <body>
     <h1>Rango says...</h1>
     <div>
-        hey there parthner! <br/>
+        hey there partner! <br/>
         <strong>{{ boldmessage }}</strong><br/>
     </div>
 
     <div>
-        {% if categories %}
+        {% if categories.exists %}
+        <h1>Most liked Categories</h1>
         <ul>
             {% for category in categories %}
                 <li>
-                    <a href="/rango/category/{{ category.slug }}">{{ category.name }}</a>
+                    <a href="{% url 'rango:show_category' category.slug %}">{{ category.name }}</a>
                 </li>
             {% endfor %}
         </ul>
         {% else %}
             <strong>There are not categories present</strong>
+        {% endif %}
+    </div>
+
+    <div>
+        {% if pages.exists %}
+        <h1>Most viewed Pages</h1>
+        <ul>
+            {% for page in pages %}
+                <li>
+                    <a href="{{ page.url }}">{{ page.title }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+            {% else %}
+            <strong>There are not pages present</strong>
         {% endif %}
     </div>
 
