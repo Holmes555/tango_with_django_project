@@ -19,7 +19,7 @@ from django.conf.urls import include
 from django.conf import settings
 from django.conf.urls.static import static
 
-from tango_with_django_project import views
+from . import views
 
 urlpatterns = [
     url(r'^$', views.main, name='main'),
