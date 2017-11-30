@@ -83,4 +83,7 @@ def show_category(request, category_name_slug):
 def about(request):
     context_dict = {'project': (str('Django ') + str(django.__version__))}
 
+    print(request.method)
+    print(request.user)
+
     return render(request, 'rango/about.html', context=context_dict)

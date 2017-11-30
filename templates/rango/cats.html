@@ -1,0 +1,11 @@
+{% if cats.exists %}
+    {% for c in cats %}
+        {% if c == act_cat %}
+            <strong>{{ c.name }}</strong>
+        {% else %}
+            {{ c.name }}
+        {% endif %}
+    {% endfor %}
+{% else %}
+    There are no categories present.
+{% endif %}
