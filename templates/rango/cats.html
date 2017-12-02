@@ -1,11 +1,13 @@
+<ul class="nav nav-pills flex-column">
 {% if cats.exists %}
     {% for c in cats %}
         {% if c == act_cat %}
-            <strong>{{ c.name }}</strong>
+            <li class="nav-item"><strong>{{ c.name }}</strong></li>
         {% else %}
-            {{ c.name }}
+            <li class="nav-item">{{ c.name }}</li>
         {% endif %}
     {% endfor %}
 {% else %}
     There are no categories present.
 {% endif %}
+</ul>

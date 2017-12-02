@@ -185,15 +185,17 @@ def show_category(request, category_name_slug):
 
 
 def about(request):
+    context_dict ={}
 
     if request.session.test_cookie_worked():
         print('Test Cookie Worked!')
         request.session.delete_test_cookie()
 
-    context_dict = {
-        'project': (str('Django ') + str(django.__version__)),
-        'visits': request.session['visits']
-    }
+    context_dict['project'] = (str('Django ') + str(django.__version__))
+    if request.session.get('visits'):
+        context_dict['visits'] = request.session['visits']
+    else:
+        context_dict['visits'] = 'You need to be log in.'
 
     print(request.method)
     print(request.user)
