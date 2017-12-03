@@ -1,13 +1,21 @@
-<ul class="nav nav-pills flex-column">
+<div class="row marketing main offset-sm-1">
+<ul>
 {% if cats.exists %}
     {% for c in cats %}
         {% if c == act_cat %}
-            <li class="nav-item"><strong>{{ c.name }}</strong></li>
+            <li class="nav-item">
+                <strong>
+                    <a href="{% url 'rango:show_category' c.slug %}">{{ c.name }}</a>
+                </strong>
+            </li>
         {% else %}
-            <li class="nav-item">{{ c.name }}</li>
+            <li class="nav-item">
+                <a href="{% url 'rango:show_category' c.slug %}">{{ c.name }}</a>
+            </li>
         {% endif %}
     {% endfor %}
 {% else %}
     There are no categories present.
 {% endif %}
 </ul>
+</div>

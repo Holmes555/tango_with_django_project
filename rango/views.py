@@ -8,6 +8,7 @@ from datetime import datetime
 
 from .models import Category, Page
 from .forms import CategoryForm, PageForm, UserForm, UserProfileForm
+from .bing_search import bing_web_search
 
 
 def index(request):
@@ -184,8 +185,23 @@ def show_category(request, category_name_slug):
 #     return HttpResponseRedirect(reverse('rango:index'))
 
 
+def search(request):
+    result_list = []
+    context_dict = {}
+
+    if request.method == 'POST':
+        query = request.POST['query'].strip()
+        if query:
+            result_list = bing_web_search(query)
+            context_dict['query'] = query
+
+    context_dict['result_list'] = result_list
+
+    return render(request, 'rango/search.html', context=context_dict)
+
+
 def about(request):
-    context_dict ={}
+    context_dict = {}
 
     if request.session.test_cookie_worked():
         print('Test Cookie Worked!')
