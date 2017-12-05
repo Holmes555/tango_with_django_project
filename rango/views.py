@@ -9,6 +9,7 @@ from datetime import datetime
 from .models import Category, Page
 from .forms import CategoryForm, PageForm, UserForm, UserProfileForm
 from .bing_search import bing_web_search
+from .webhouse_search import webhoseio_search
 
 
 def index(request):
@@ -186,18 +187,40 @@ def show_category(request, category_name_slug):
 
 
 def search(request):
-    result_list = []
-    context_dict = {}
+    context_dict = Context.load_context_dict()
 
     if request.method == 'POST':
-        query = request.POST['query'].strip()
-        if query:
-            result_list = bing_web_search(query)
-            context_dict['query'] = query
+        if request.POST.get('bing_query'):
+            bing_query = request.POST['bing_query'].strip()
+            if bing_query:
+                bing_result_list = bing_web_search(bing_query)
+                context_dict['bing_result_list'] = bing_result_list
+                context_dict['bing_query'] = bing_query
 
-    context_dict['result_list'] = result_list
+        if request.POST.get('webhoseio_query'):
+            webhoseio_query = request.POST['webhoseio_query'].strip()
+            if webhoseio_query:
+                webhoseio_result_list = webhoseio_search(webhoseio_query)
+                context_dict['webhoseio_query'] = webhoseio_query
+                context_dict['webhoseio_result_list'] = webhoseio_result_list
+
+    Context.save_context_dict(context_dict)
 
     return render(request, 'rango/search.html', context=context_dict)
+
+
+# Not a view. Just a helper class
+
+class Context():
+    context = {}
+
+    @staticmethod
+    def save_context_dict(context_dict):
+        Context.context = context_dict
+
+    @staticmethod
+    def load_context_dict():
+        return Context.context
 
 
 def about(request):

@@ -11,14 +11,14 @@ def read_bing_key():
     returns: a string which is either None, i.e. no key found, or with a key.
     Remember: put bing.key in your .gitignore file to avoid committing it!
     """
-    with open('bing.key', 'r') as f:
-        bing_api_key = f.readline()
 
-    # try:
-    #     with open('bing.key', 'r') as f:
-    #         bing_api_key = f.readline()
-    # except IOError:
-    #     print('file bing.key not found')
+    bing_api_key = None
+
+    try:
+        with open('bing.key', 'r') as f:
+            bing_api_key = f.readline()
+    except IOError:
+        print('file bing.key not found')
 
     return bing_api_key
 
@@ -109,13 +109,13 @@ def bing_web_search(search):
     return results
 
 
-if __name__ == '__main__':
-    search_query = stdin.readline()
-
-    print('Searching the Web for: ', search_query)
-
-    result = bing_web_search(search_query)
-    # print("\nRelevant HTTP Headers:\n")
-    # print("\n".join(headers))
-    print("\nJSON Response:\n")
-    print(json.dumps(result, indent=4))
+# if __name__ == '__main__':
+#     search_query = stdin.readline()
+#
+#     print('Searching the Web for: ', search_query)
+#
+#     result = bing_web_search(search_query)
+#     # print("\nRelevant HTTP Headers:\n")
+#     # print("\n".join(headers))
+#     print("\nJSON Response:\n")
+#     print(json.dumps(result, indent=4))
