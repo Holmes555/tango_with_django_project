@@ -1,6 +1,6 @@
 {% block body_block %}
     <form class="form-inline" id="user_form"
-          method="post" action="{% url 'rango:search' %}">
+          method="post" action="{% url url_type params %} ">
         {% csrf_token %}
         <div class="form-group">
             <input class="form-control" type="text" size="50"

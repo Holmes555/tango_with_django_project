@@ -1,0 +1,29 @@
+{% extends 'rango/base.html' %}
+
+{% load staticfiles %}
+
+{% block title_block %}
+    Profile
+{% endblock title_block %}
+
+{% block body_block %}
+    <h2 class="form-signin-heading">{{ username }} Profile</h2>
+    <form role="form" method="post" action="." enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            <p>
+                <img src="{{ MEDIA_URL }}{{ profile.picture }}"
+                     width="300" height="300"
+                     alt="Your profile picture" /><br/>
+            </p>
+            <p><label for="id_website">
+                Website:</label>
+                <a href="{{ profile.website }}">{{ profile.website }}</a>
+            </p>
+        </div>
+        {% if user.username == username %}
+            <button class="btn btn-prime">Update</button>
+        {% endif %}
+    </form>
+
+{% endblock body_block %}

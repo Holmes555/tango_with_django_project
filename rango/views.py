@@ -1,12 +1,13 @@
 import django
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from datetime import datetime
 
-from .models import Category, Page
+from .models import Category, Page, UserProfile
 from .forms import CategoryForm, PageForm, UserForm, UserProfileForm
 from .bing_search import bing_web_search
 from .webhouse_search import webhoseio_search
@@ -113,7 +114,7 @@ def show_category(request, category_name_slug):
 
     try:
         category = Category.objects.get(slug=category_name_slug)
-        pages = Page.objects.filter(category=category)
+        pages = Page.objects.filter(category=category).order_by('-views')
 
         context_dict['pages'] = pages
         context_dict['category'] = category
@@ -122,7 +123,29 @@ def show_category(request, category_name_slug):
         context_dict['pages'] = None
         context_dict['category'] = None
 
+    if request.method == 'POST':
+        if request.POST.get('bing_query'):
+            bing_query = request.POST['bing_query'].strip()
+            if bing_query:
+                bing_result_list = bing_web_search(bing_query)
+                context_dict['bing_result_list'] = bing_result_list
+                context_dict['bing_query'] = bing_query
+
     return render(request, 'rango/category.html', context=context_dict)
+
+
+def track_url(request, page_id):
+
+    try:
+        page = Page.objects.get(id=page_id)
+        if page:
+            page.views += 1
+            page.save()
+            return redirect(page.url)
+    except:
+        print('There is no such page!')
+
+    return redirect(reverse('rango:index'))
 
 
 # def register(request):
@@ -186,7 +209,78 @@ def show_category(request, category_name_slug):
 #     return HttpResponseRedirect(reverse('rango:index'))
 
 
-def search(request):
+@login_required
+def register_profile(request):
+    context_dict = {}
+
+    if request.method == 'POST':
+        profile_form = UserProfileForm(data=request.POST)
+
+        if profile_form.is_valid():
+            try:
+                profile_user = request.user.userprofile
+            except UserProfile.DoesNotExist:
+                profile_user = UserProfile(user=request.user)
+
+            profile_user.user = request.user
+
+            if 'website' in request.POST:
+                profile_user.website = request.POST['website']
+
+            if 'picture' in request.FILES:
+                profile_user.picture = request.FILES['picture']
+            else:
+                profile_user.picture = None
+
+            profile_user.save()
+
+            return redirect(reverse('rango:index'))
+        else:
+            print(profile_form.errors)
+    else:
+        profile_form = UserProfileForm()
+
+    context_dict['profile_form'] = profile_form
+
+    return render(request, 'registration/profile_registration.html', context=context_dict)
+
+
+@login_required
+def profile(request, username):
+    context_dict = {'username': username}
+
+    try:
+        user = User.objects.get(username=username)
+    except User.DoesNotExist:
+        return redirect(reverse('rango:index'))
+
+    profile_user = UserProfile.objects.get_or_create(user=user)[0]
+    context_dict['profile'] = profile_user
+
+    if request.method == 'POST':
+        return redirect(reverse('rango:register_profile'))
+
+    return render(request, 'rango/profile.html', context=context_dict)
+
+
+@login_required
+def list_profiles(request):
+    context_dict = {}
+    profile_list = []
+
+    for user in User.objects.all():
+        try:
+            if user.userprofile:
+                profile_list.append(user.userprofile)
+        except UserProfile.DoesNotExist:
+            print('There is no profile for ' + str(user))
+
+    context_dict['profile_list'] = profile_list
+
+    return render(request, 'rango/list_profiles.html', context=context_dict)
+
+
+def search(request, params):
     context_dict = Context.load_context_dict()
 
     if request.method == 'POST':

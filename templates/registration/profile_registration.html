@@ -1,0 +1,25 @@
+{% extends 'rango/base.html' %}
+
+{% block title_block %}
+    Profile Registration
+{% endblock title_block %}
+
+{% block body_block %}
+    <h2 class="form-signin-heading">Set up your Profile</h2>
+    <form role="form" method="post" action="." enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            <p><label for="id_website">
+                Website:</label>
+                <input class="form-control" id="id_website" name="website"
+                     type="url" />
+            </p>
+            <p><label for="id_picture">
+                Picture:</label>
+                <input class="form-control" id="id_picture" maxlength="30"
+                     name="picture" type="file" />
+            </p>
+        </div>
+        <button type="submit" class="btn btn-prime">Submit</button>
+    </form>
+{% endblock body_block %}

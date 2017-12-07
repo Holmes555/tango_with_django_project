@@ -1,0 +1,34 @@
+{% extends 'rango/base.html' %}
+
+{% load staticfiles %}
+
+{% block title_block %}
+    Profiles
+{% endblock title_block %}
+
+{% block body_block %}
+    <h2 class="form-signin-heading">User Profiles</h2>
+     <div class="panel-heading">
+        <!-- Display search results in an ordered list -->
+        <div class="panel-body">
+        <div class="list-group">
+        {% for profile in profile_list %}
+            <div class="list-group-item">
+            {% if profile.picture %}
+                <img src="{{ MEDIA_URL }}{{ profile.picture }}"
+                     width="64" height="64"
+                     alt="{{ profile.user.username }} profile picture" />
+            {% else %}
+                <img src="http://lorempixel.com/64/64/people/"
+                     width="64" height="64"
+                     alt="{{ profile.user.username }} profile picture" />
+            {% endif %}
+            <h4 class="col-sm-1 list-group-item-heading">
+                <a href="{% url 'rango:profile' profile.user.username %}">{{ profile.user.username }}</a>
+            </h4>
+            </div>
+        {% endfor %}
+        </div>
+        </div>
+    </div>
+{% endblock body_block %}

@@ -11,10 +11,12 @@ def get_category_list(cat=None):
 
 
 @register.inclusion_tag('rango/search_api.html')
-def get_search_api(query, result_list, search_api):
+def get_search_api(query, result_list, search_api, url_type, params=''):
     context_dict = {
         'query': query,
         'result_list': result_list,
         'search_api': search_api,
+        'url_type': url_type,
+        'params': params
     }
     return context_dict
