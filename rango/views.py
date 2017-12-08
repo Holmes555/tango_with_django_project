@@ -109,6 +109,26 @@ def add_page(request, category_name_slug):
     return render(request, 'rango/add_page.html', context_dict)
 
 
+@login_required
+def auto_add_page(request):
+    context_dict = {}
+
+    if request.method == 'GET':
+        cat_id = request.GET['category_id']
+        url = request.GET['url']
+        title = request.GET['title']
+
+        cat = Category.objects.get(id=int(cat_id))
+        if cat:
+            page = Page.objects.get_or_create(category=cat, title=title, url=url, views=0)[0]
+            page.save()
+
+    page_list = Page.objects.filter(category=cat).order_by('-views')
+    context_dict['pages'] = page_list
+
+    return render(request, 'rango/page_list.html', context=context_dict)
+
+
 def show_category(request, category_name_slug):
     context_dict = {}
 
@@ -132,6 +152,48 @@ def show_category(request, category_name_slug):
                 context_dict['bing_query'] = bing_query
 
     return render(request, 'rango/category.html', context=context_dict)
+
+
+@login_required
+def like_category(request):
+    cat_id = None
+    likes = 0
+
+    if request.method == 'GET':
+        cat_id = request.GET['category_id']
+
+    if cat_id:
+        cat = Category.objects.get(id=int(cat_id))
+        likes = cat.likes
+        if cat and not Category.objects.filter(user_likes=request.user, id=int(cat_id)):
+            cat.user_likes.add(request.user)
+            likes += 1
+            cat.likes = likes
+            cat.save()
+
+    return HttpResponse(likes)
+
+
+def get_category_list(max_result=0, starts_with=''):
+    cat_list = []
+
+    if starts_with:
+        cat_list = Category.objects.filter(name__istartswith=starts_with)
+    if max_result > 0:
+        if len(cat_list) > max_result:
+            cat_list = cat_list[:max_result]
+
+    return cat_list
+
+
+def category_suggestion(request):
+    cat_list = []
+
+    if request.method == 'GET':
+        starts_with = request.GET['suggestion']
+        cat_list = get_category_list(8, starts_with)
+
+    return render(request, 'rango/cats.html', {'cats': cat_list})
 
 
 def track_url(request, page_id):
@@ -280,7 +342,7 @@ def list_profiles(request):
     return render(request, 'rango/list_profiles.html', context=context_dict)
 
 
-def search(request, params):
+def search(request):
     context_dict = Context.load_context_dict()
 
     if request.method == 'POST':

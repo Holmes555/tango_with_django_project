@@ -20,3 +20,8 @@ def get_search_api(query, result_list, search_api, url_type, params=''):
         'params': params
     }
     return context_dict
+
+
+@register.inclusion_tag('rango/page_list.html')
+def get_page_list(page_list=None):
+    return {'pages': page_list}

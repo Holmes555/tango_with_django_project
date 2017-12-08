@@ -47,7 +47,7 @@
             <a class="nav-link" href="{% url 'rango:about' %}">About</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'rango:search' '' %}">Search</a>
+            <a class="nav-link" href="{% url 'rango:search' %}">Search</a>
           </li>
           {% if user.is_authenticated %}
               <li class="nav-item">
@@ -77,9 +77,19 @@
     <div class="container-fluid">
         <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
-            {% block sidebar_block %}
-                {% get_category_list category %}
-            {% endblock %}
+            <div class="col-lg-12">
+                <h4>Type to find a category</h4>
+                <form>
+                    <input class="form-control" type="text" size="30"
+                           name="suggestion" value="" id="suggestion" />
+                </form>
+                <hr/>
+            </div>
+            <div id="cats">
+                {% block sidebar_block %}
+                    {% get_category_list category %}
+                {% endblock %}
+            </div>
         </div>
         <div class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 main">
         <br/>
@@ -102,6 +112,8 @@
     <script src="http://v4-alpha.getbootstrap.com/assets/js/ie10-viewport-bug-workaround.js"></script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
-    <script src="{% static "js/rango-jquery.js" %}"></script>
+{#    <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>#}
+    <s2cript src="{% static 'js/rango-jquery.js' %}"></s2cript>
+    <script src="{% static 'js/rango-ajax.js' %}"></script>
   </body>
 </html>

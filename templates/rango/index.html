@@ -15,14 +15,15 @@
     </div>
 
     <div class="row marketing">
-        <div class="col-lg-6">
+        <div class="col-lg-6 list-group">
         <div>
             {% if categories.exists %}
             <h1>Most liked Categories</h1>
             <ul>
                 {% for category in categories %}
-                    <li>
+                    <li class="list-group-item">
                         <a href="{% url 'rango:show_category' category.slug %}">{{ category.name }}</a>
+                        <p class="offset-sm-1 btn-sm btn-primary">{{ category.likes }}</p>
                     </li>
                 {% endfor %}
             </ul>
@@ -31,14 +32,15 @@
             {% endif %}
         </div>
         </div>
-        <div class="col-lg-6">
+        <div class="col-lg-6 list-group">
         <div>
             {% if pages.exists %}
             <h1>Most viewed Pages</h1>
             <ul>
                 {% for page in pages %}
-                    <li>
+                    <li class="list-group-item">
                         <a href="{% url 'rango:goto' page.id %}">{{ page.title }}</a>
+                        <p class="offset-sm-1 btn-sm btn-primary">{{ page.views }}</p>
                     </li>
                 {% endfor %}
             </ul>

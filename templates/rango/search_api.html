@@ -1,6 +1,6 @@
 {% block body_block %}
-    <form class="form-inline" id="user_form"
-          method="post" action="{% url url_type params %} ">
+    <form class="form-inline search-api" id="user_form" view="{{ url_type }}" params="{{ params }}"
+          method="post" action="">
         {% csrf_token %}
         <div class="form-group">
             <input class="form-control" type="text" size="50"
@@ -20,7 +20,11 @@
                     <h4 class="list-group-item-heading">
                         <a href="{{ result.url }}">{{ result.name }}</a>
                     </h4>
-                    <p class="list-group-item-text">{{ result.summary }}</p>
+                    <p class="list-group-item-text">{{ result.summary }}</p><br/>
+                    <button class="btn btn-primary add_page" type="button" name="add_page"
+                            value="" data-url="{{ result.url }}" data-title="{{ result.name }}">
+                        Add
+                    </button>
                 </div>
             {% endfor %}
         </div>

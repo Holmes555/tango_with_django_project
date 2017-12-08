@@ -1,0 +1,13 @@
+<h1>Pages</h1>
+{% if pages.exists %}
+<ul>
+{% for page in pages %}
+    <li>
+        <a href="{% url 'rango:goto' page.id %}">{{ page.title }}</a>
+        <strong id="view_count">{{ page.views }}</strong>
+    </li>
+{% endfor %}
+</ul>
+{% else %}
+<strong>No pages currently in category</strong><br/>
+{% endif %}

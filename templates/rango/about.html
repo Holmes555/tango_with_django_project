@@ -16,5 +16,13 @@
         <img src="{{ MEDIA_URL }}tiger.jpg" alt="Picture of tiger" /><br/>
         <!-- Number of visits -->
         Number of visits: {{ visits }}<br/>
+        <!-- JQuery block -->
+        <button class="btn" onclick="alert('You clicked JQuery button!')">
+            JQuery Example Default
+        </button>
+        <button class="btn ouch" id="about_btn">
+            JQuery Example Custom
+        </button>
+        <h4 class="ouch">This is one more example</h4>
     </div>
 {% endblock body_block %}

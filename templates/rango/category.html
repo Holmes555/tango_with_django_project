@@ -9,19 +9,19 @@
 
 {% block body_block %}
     <h1>{{ category.name }}</h1>
-    {% if category %}
-        {% if pages %}
-            <ul>
-            {% for page in pages %}
-                <li>
-                    <a href="{% url 'rango:goto' page.id %}">{{ page.title }}</a>
-                    <strong id="like_count">{{ page.views }}</strong>
-                </li>
-            {% endfor %}
-            </ul>
-        {% else %}
-            <strong>No pages currently in category</strong><br/>
+    <div>
+        <strong id="id_count">{{ category.likes }}</strong> people likes this category
+        {% if user.is_authenticated %}
+            <button class="btn btn-primary" data-cat-id="{{ category.id }}"
+                    id="like" type="button">
+                Like
+            </button>
         {% endif %}
+    </div>
+    {% if category %}
+        <div id="pages">
+            {% get_page_list pages %}
+        </div>
         {% if user.is_authenticated %}
             <a href="{% url 'rango:add_page' category.slug %}">Add a new Page</a><br/>
         {% endif %}
@@ -31,8 +31,8 @@
 
     <div>
         <br/>
-        <h2>Search pages with Bing</h2>
         {% if user.is_authenticated %}
+            <h2>Search pages with Bing</h2>
             {% get_search_api bing_query bing_result_list 'bing' 'rango:show_category' category.slug %}
         {% endif %}
     </div>
