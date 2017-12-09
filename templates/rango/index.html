@@ -23,7 +23,7 @@
                 {% for category in categories %}
                     <li class="list-group-item">
                         <a href="{% url 'rango:show_category' category.slug %}">{{ category.name }}</a>
-                        <p class="offset-sm-1 btn-sm btn-primary">{{ category.likes }}</p>
+                        <p class="offset-xs-1 badge badge-pill badge-primary">{{ category.likes }}</p>
                     </li>
                 {% endfor %}
             </ul>
@@ -40,7 +40,7 @@
                 {% for page in pages %}
                     <li class="list-group-item">
                         <a href="{% url 'rango:goto' page.id %}">{{ page.title }}</a>
-                        <p class="offset-sm-1 btn-sm btn-primary">{{ page.views }}</p>
+                        <p class="offset-xs-1 badge badge-pill badge-primary">{{ page.views }}</p>
                     </li>
                 {% endfor %}
             </ul>
